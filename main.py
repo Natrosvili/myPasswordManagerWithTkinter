@@ -4,27 +4,39 @@ from random import choice, randint, shuffle
 import pyperclip
 
 
+
 # Password Generator Project:
-def generate_password():
+# Mit dieser Funktion generieren wir das Passwort,
+# indem wir eine Variable aus allen Buchstaben, Zahlen und Symbolen erstellen.
+# Dann machen wir Variablen, die eine zufällige Auswahl aus den obigen Arrays treffen.
+
+def generatePassword():
     letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i ", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
                "v", "w", "x", "u", "z"]
-    numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    symbols = ["!", "#", "$", "%", "%", "(", ")", "*", "+ "]
+    zahlen = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    symbole = ["!", "#", "$", "%", "%", "(", ")", "*", "+ "]
 
-    password_letters = [choice(letters) for _ in range(randint(8, 10))]
-    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
-    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
 
-    password_list = password_letters + password_symbols + password_numbers
-    shuffle(password_list)
+    passwordLetters = [choice(letters) for l in range(randint(8, 10))]
+    passwordZahlen = [choice(zahlen) for z in range(randint(2, 4))]
+    passwordSymbole = [choice(symbole) for s in range(randint(2, 4))]
 
-    password = "".join(password_list)
+    passwordList = passwordLetters + passwordSymbole + passwordZahlen
+    shuffle(passwordList)
+
+    password = "".join(passwordList)
     password_entry.insert(0, password)
     pyperclip.copy(password)
 
 
+
+
 # Password speichern:
-def save():
+# Mit dieser Funktion stellen wir sicher,
+# dass die Website, E-Mail und das Passwort, die wir geschrieben haben,
+# in einer neuen Datei namens data.txt gespeichert werden
+
+def speichern():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
@@ -33,14 +45,17 @@ def save():
         messagebox.showinfo(title="Oops",
                             message=" Bitte stellen Sie sicher dass Sie keine Felder leer gelassen haben.")
     else:
-        is_ok = messagebox.askokcancel(title=website,
+        isOk = messagebox.askokcancel(title=website,
                                        message=f"Diese sind die Details:\nEmail:{email}\nPassword:{password}\n Ist es ok , zu speichern ?")
 
-    if is_ok:
+
+    if isOk:
         with open("data.txt", "a") as data_file:
             data_file.write(f"{website} | {email} | {password}\n")
             website_entry.delete(0, END)
             password_entry.delete(0, END)
+
+
 
 
 # Set Up:
@@ -69,9 +84,9 @@ password_entry = Entry(width=21)
 password_entry.grid(row=3, column=1)
 
 # Buttons:
-generate_password_button = Button(text="Generate Password", command=generate_password)
+generate_password_button = Button(text="Generate Password", command=generatePassword)
 generate_password_button.grid(row=3, column=2)
-add_button = Button(text="Add", width=36, command=save)
+add_button = Button(text="Add", width=36, command=speichern)
 add_button.grid(row=4, column=1, columnspan=2)
 
 window.mainloop()
